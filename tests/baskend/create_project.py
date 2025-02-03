@@ -2,14 +2,14 @@ import requests
 import pytest
 
 
-BASE_URL = 'http://admin:admin@localhost:8111'
+BASE_URL = 'http://admin:loh@localhost:8111'
 
 
 class TestProjectCreate:
 
     def test_project_create(self):
         # Получение токена
-        auth_response = requests.get(url=f"{BASE_URL}/authenticationTest.html?csrf", auth=("admin", "admin"))
+        auth_response = requests.get(url=f"{BASE_URL}/authenticationTest.html?csrf", auth=("admin", "loh"))
         csrf_token = auth_response.text
         headers = {"X-TC-CSRF-Token": csrf_token}
 
