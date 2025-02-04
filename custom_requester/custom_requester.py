@@ -8,8 +8,7 @@ from constants.hosts import BASE_URL
 class CustomRequester:
     base_headers = dict({"Content-Type": "application/json", "Accept": "application/json"})
 
-    def __init__(self, session):
-        self.session = session
+    def __init__(self):
         self.base_url = BASE_URL
         self.logger = logging.getLogger(__name__)
 

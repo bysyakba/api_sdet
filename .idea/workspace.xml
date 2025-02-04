@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b4aa5633-02ca-4b89-a5cf-f9e5701fad20" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/custom_requester/custom_requester.py" beforeDir="false" afterPath="$PROJECT_DIR$/custom_requester/custom_requester.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/baskend/create_project.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/baskend/create_project.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/baskend/log.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,6 +23,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -46,7 +54,7 @@
   &quot;keyToString&quot;: {
     &quot;Python tests.Python tests for create_project.TestProjectCreate.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;slave&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Egorcaaa/Desktop/api_sdet&quot;
   }
 }</component>
