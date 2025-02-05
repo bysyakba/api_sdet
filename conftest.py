@@ -2,6 +2,7 @@ import pytest
 import requests
 
 from api.api_manager import ApiManager
+from data.project_data import ProjectData
 from data.user_data import UserData
 from entities.user import User, Role
 from resources.user_creds import SuperAdminCreds
@@ -51,3 +52,18 @@ def user_create(user_session, super_admin):
 
     for username in created_users_pool:
         super_admin.api_manager.user_api.delete_user(username)
+
+
+@pytest.fixture
+def project_data(super_admin):
+    project_id_pool = []
+
+    def _project_data():
+        project = ProjectData.create_project_data()
+        project_id_pool.append(project.id)
+        return project
+
+    yield _project_data
+
+    for project_id in project_id_pool:
+        super_admin.api_manager.project_api.clean_up_project(project_id)
