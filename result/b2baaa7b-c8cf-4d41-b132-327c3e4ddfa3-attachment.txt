@@ -1,0 +1,52 @@
+2025-02-05 22:08:50 [32mINFO[0m [32mpytest tests/baskend/test_create_project.py::TestProjectCreate::test_create_project (setup)[0m
+curl -X GET 'http://localhost:8111/authenticationTest.html?csrf' \
+-H 'User-Agent: python-requests/2.32.3' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: */*' \
+-H 'Connection: keep-alive' \
+-H 'Authorization: Basic OjEzMTM2MzA1Njg1MDA5MDIyODA=' \
+2025-02-05 22:08:50 [32mINFO[0m [32mpytest tests/baskend/test_create_project.py::TestProjectCreate::test_create_project[0m
+curl -X POST 'http://localhost:8111/app/rest/projects' \
+-H 'User-Agent: python-requests/2.32.3' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'X-TC-CSRF-Token: ea5e168a-6b56-41bf-96e0-d424592fcc64' \
+-H 'Cookie: TCSESSIONID=00EA49FB134336788A9C965326B3066F; RecentLogin=' \
+-H 'Content-Length: 111' \
+-H 'Authorization: Basic OjEzMTM2MzA1Njg1MDA5MDIyODA=' \
+-d '{"parentProject": {"locator": "_Root"}, "name": "main", "id": "LhKVBroWlcs", "copyAllAssociatedSettings": true}' 
+
+2025-02-05 22:08:51 [32mINFO[0m [32mpytest tests/baskend/test_create_project.py::TestProjectCreate::test_create_project[0m
+curl -X GET 'http://localhost:8111/app/rest/projects/main' \
+-H 'User-Agent: python-requests/2.32.3' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'X-TC-CSRF-Token: ea5e168a-6b56-41bf-96e0-d424592fcc64' \
+-H 'Cookie: TCSESSIONID=00EA49FB134336788A9C965326B3066F' \
+-H 'Authorization: Basic OjEzMTM2MzA1Njg1MDA5MDIyODA=' \
+2025-02-05 22:08:51 [32mINFO[0m [32mpytest tests/baskend/test_create_project.py::TestProjectCreate::test_create_project (teardown)[0m
+curl -X DELETE 'http://localhost:8111/app/rest/projects/id:LhKVBroWlcs' \
+-H 'User-Agent: python-requests/2.32.3' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'X-TC-CSRF-Token: ea5e168a-6b56-41bf-96e0-d424592fcc64' \
+-H 'Cookie: TCSESSIONID=00EA49FB134336788A9C965326B3066F' \
+-H 'Content-Length: 0' \
+-H 'Authorization: Basic OjEzMTM2MzA1Njg1MDA5MDIyODA=' \
+
+2025-02-05 22:08:51 [32mINFO[0m [32mpytest tests/baskend/test_create_project.py::TestProjectCreate::test_create_project (teardown)[0m
+curl -X GET 'http://localhost:8111/app/rest/projects' \
+-H 'User-Agent: python-requests/2.32.3' \
+-H 'Accept-Encoding: gzip, deflate' \
+-H 'Accept: application/json' \
+-H 'Connection: keep-alive' \
+-H 'Content-Type: application/json' \
+-H 'X-TC-CSRF-Token: ea5e168a-6b56-41bf-96e0-d424592fcc64' \
+-H 'Cookie: TCSESSIONID=00EA49FB134336788A9C965326B3066F' \
+-H 'Authorization: Basic OjEzMTM2MzA1Njg1MDA5MDIyODA=' \
