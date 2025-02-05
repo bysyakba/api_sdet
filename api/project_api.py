@@ -26,3 +26,6 @@ class ProjectAPI(CustomRequester):
         get_projects_response = self.get_project().json()
         project_ids = [project.get('id', {}) for project in get_projects_response.get('project', [])]
         assert created_project_id not in project_ids, "ID созданного проекта найден в списке проектов после удаления."
+
+    def get_project_by_locator(self, locator):
+        return self.send_request("GET", f"/app/rest/projects/{locator}")

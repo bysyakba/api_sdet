@@ -1,5 +1,5 @@
 from constants.roles import Roles
-from data.project_data import ProjectData
+from data.project_data import ProjectData, ProjectResponseModel
 
 
 class TestProjectCreate:
@@ -7,22 +7,25 @@ class TestProjectCreate:
 
     @classmethod
     def setup_class(cls):
-        cls.project_data= ProjectData.create_project_data()
-        cls.create_project_id = cls.project_data["id"]
-
-    def test_project_create_with_role_model(self, super_admin, user_create):
-        create_project_response = super_admin.api_manager.project_api.create_project(self.project_data).json()
-        assert create_project_response.get("id", {}) == self.create_project_id, \
-            f"expected project id= {self.create_project_id}, but '{create_project_response.get('id', {})}' given"
-        get_projects_response = super_admin.api_manager.project_api.get_project().json()
-        project_ids = [project.get('id', {}) for project in get_projects_response.get('project', [])]
-        assert self.create_project_id in project_ids, \
-            f"expected created project id={self.create_project_id} in project_ids, but not matched"
-        super_admin.api_manager.project_api.clean_up_project(self.create_project_id)
+        cls.project_data = ProjectData.create_project_data()
+        cls.project_data_id = cls.project_data.id
 
 
-    def test_project_create_user(self, super_admin, user_create):
-        project_user = user_create(Roles.PROJECT_ADMIN.value)
-        project_user.api_manager.auth_api.auth_and_get_csrf(project_user.creds)
-        created_project = project_user.api_manager.project_api.create_project(self.project_data).json()
-        assert created_project['id'] == self.create_project_id
+    def test_create_project_with_role(self, super_admin, project_data):
+        project_data_1 = project_data()
+        project_data_2 = project_data()
+        response = super_admin.api_manager.project_api.create_project(project_data_1.model_dump()).text
+        project_response = ProjectResponseModel.model_validate_json(response)
+        assert project_response.id == project_data_1.id, \
+            f"expected project id= {project_data_1.id}, but '{project_response.id}' given"
+        assert project_response.parentProjectId == project_data_1.parentProject["locator"], \
+            (f"expected parent project id= {project_data_1.parentProject['locator']},"
+             f" but '{project_response.parentProjectId}' given in response")
+
+        response = super_admin.api_manager.project_api.create_project(project_data_2.model_dump()).text
+        project_response = ProjectResponseModel.model_validate_json(response)
+        assert project_response.id == project_data_2.id, \
+            f"expected project id= {project_data_2.id}, but '{project_response.id}' given"
+        assert project_response.parentProjectId == project_data_2.parentProject["locator"], \
+            (f"expected parent project id= {project_data_2.parentProject['locator']},"
+             f" but '{project_response.parentProjectId}' given in response")
