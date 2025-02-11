@@ -1,8 +1,10 @@
+import allure
 import pytest
 import requests
 
 from api.api_manager import ApiManager
-from data.project_data import ProjectData
+from data.build_config_data import BuildConfigData
+from data.project_data import ProjectData, ProjectResponseModel
 from data.user_data import UserData
 from entities.user import User, Role
 from resources.user_creds import SuperAdminCreds
@@ -67,3 +69,27 @@ def project_data(super_admin):
 
     for project_id in project_id_pool:
         super_admin.api_manager.project_api.clean_up_project(project_id)
+
+
+@pytest.fixture
+def build_config_data(project_data):
+    project = project_data()
+    return BuildConfigData.create_build_config_data(project.id)
+
+
+@pytest.fixture()
+def project(super_admin):
+    """Создает проект перед тестами и удаляет его после"""
+    project_data = ProjectData.create_project_data()
+
+    with allure.step("Создание проекта"):
+        response = super_admin.api_manager.project_api.create_project(project_data.model_dump()).text
+        project_response = ProjectResponseModel.model_validate_json(response)
+        project_id = project_response.id
+
+    yield project_id  # Возвращаем ID проекта
+
+    with allure.step("Удаление проекта после теста"):
+        super_admin.api_manager.project_api.delete_project(project_id)
+
+
