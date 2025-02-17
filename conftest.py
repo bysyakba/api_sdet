@@ -2,11 +2,12 @@ import pytest
 import requests
 
 from api.api_manager import ApiManager
+from constants.browser import BROWSERS
 from data.project_data import ProjectData
 from data.user_data import UserData
 from entities.user import User, Role
 from resources.user_creds import SuperAdminCreds
-
+from utils.browser_setup import BrowserSetup
 
 
 @pytest.fixture
@@ -67,3 +68,10 @@ def project_data(super_admin):
 
     for project_id in project_id_pool:
         super_admin.api_manager.project_api.clean_up_project(project_id)
+
+
+@pytest.fixture(params=BROWSERS)
+def browser(request):
+    plawright, browser, context, page = BrowserSetup.setup(browser_type=request.param)
+    yield page
+    BrowserSetup.teardown(context, browser, plawright)
