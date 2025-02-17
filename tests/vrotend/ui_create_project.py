@@ -1,3 +1,5 @@
+import time
+
 import allure
 
 from data.project_data import ProjectResponseModel
@@ -23,3 +25,5 @@ def test_create_project(browser, project_data, super_admin):
         created_project = ProjectResponseModel.model_validate_json(response)
         assert created_project.id == project_data_1.id, \
             f"expected project id= {project_data_1.id}, but '{created_project.id}' given"
+        project_creation_browser.header.go_to_projects_throw_header_button()
+        time.sleep(2)
