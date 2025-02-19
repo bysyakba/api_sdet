@@ -1,6 +1,6 @@
 import allure
 
-from conftest import browser
+# from conftest import browser
 from pages.setup_page import SetUpPage
 
 
