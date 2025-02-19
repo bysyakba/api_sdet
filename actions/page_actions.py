@@ -1,10 +1,22 @@
 from playwright.sync_api import Page, expect
 import allure
 
+from constants.hosts import BASE_URL
+
 
 class PageActions:
     def __init__(self, page: Page):
+        self._endpoint = ""
+        self._base_url = BASE_URL
         self.page = page
+
+    @property
+    def page_url(self):
+        return self._base_url + self._endpoint
+
+    @page_url.setter
+    def page_url(self, endpoint):
+        self._endpoint = endpoint
 
     def navigate(self, url):
         with allure.step(f"Переход на URL: {url}"):
@@ -66,4 +78,13 @@ class PageActions:
         with allure.step(f"Проверка, что элемент {selector} скрыт"):
             expect(self.page).locator(selector).to_be_hidden()
 
+    def activate_checkbox_if_not_active(self, selector):
+        with allure.step(f"Активация чекбокса: {selector}"):
+            if not self.page.is_checked(selector):
+                self.page.click(selector)
+                assert self.page.is_checked(selector), f"Чекбокс {selector} не получилось активировать"
+
+    def wait_disappear_selector(self, selector, timeout=30000):
+        with allure.step(f"Ожидание исчезновения лоадера: {selector}"):
+            self.page.wait_for_selector(selector, state="detached", timeout=timeout)
 
