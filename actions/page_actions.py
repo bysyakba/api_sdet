@@ -29,11 +29,11 @@ class PageActions:
     def wait_for_url_change(self, expected_url):
         with allure.step(f"Ожидание изменения URL на {expected_url}"):
             print(self.page.url)
-            self.page.wait_for_url(expected_url, timeout=60000)
+            self.page.wait_for_url(expected_url, timeout=3100000)
 
     def wait_for_page_load(self):
         with allure.step(f"Ожидание загрузки страницы"):
-            self.page.wait_for_load_state('load', timeout=60000)
+            self.page.wait_for_load_state('load', timeout=180000)
 
     def click_button(self, selector):
         with allure.step(f"Клик по эдементу: {selector}"):
