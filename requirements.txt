@@ -14,7 +14,7 @@ packaging==23.2
 playwright==1.41.2
 pluggy==1.4.0
 pydantic==2.10.6
-pydantic_core==2.16.2
+pydantic_core==2.27.2
 pyee==11.0.1
 pytest==8.0.0
 pytest-assume==2.4.3
