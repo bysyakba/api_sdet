@@ -70,7 +70,7 @@ jobs:
       - name: Run Set Up Test
         run: |
           playwright install
-          pytest -v test/frontend/test_set_up.py 
+          pytest -v tests/vrotend/test_set_up.py 
           
           
 
