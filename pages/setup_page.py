@@ -23,10 +23,10 @@ class Loading(PageActions):
         self.loading_icon_locator = ".icon-refresh"
 
     def wait_loading(self
-                     , timeout_wait=1000000000
+                     # , timeout_wait=1000000000
                      , timeout_disappear=1000000000):
         with allure.step("Ждем начала лоадинга"):
-            self.wait_for_selector(self.loading_icon_locator, timeout_wait)
+            self.wait_for_selector(self.loading_icon_locator)
         with allure.step("Ждем когда закончится лоадинг"):
             self.wait_disappear_selector(self.loading_icon_locator, timeout_disappear)
 
