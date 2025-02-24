@@ -1,4 +1,6 @@
 import allure
+
+from constants.hosts import BASE_URL
 from pages.base_page import BasePage
 
 
