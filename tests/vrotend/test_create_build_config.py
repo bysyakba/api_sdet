@@ -18,12 +18,12 @@ def test_create_build_config(browser, project_data, super_admin):
         browser.fill('#username', 'admin')
         browser.fill('#password', 'lox')
         browser.click('.loginButton')
-        browser.wait_for_url('http://localhost:8111/favorite/projects', timeout=1000000000)
+        browser.wait_for_url('http://localhost:8111/favorite/projects')
         print("sex")
     print("sex")
     with allure.step("Создание проекта"):
         project_creation_browser = ProjectCreationPage(browser)
-        project_creation_browser.create_project(project_name, project_id, project_name)
+        project_creation_browser.create_project(project_name, project_id, project_name, browser)
     with allure.step("Создание билд конфига"):
         build_creation_browser = BuildCreationPage(browser)
         build_creation_browser.create_build(project_name, project_id, project_name)

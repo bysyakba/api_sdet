@@ -1,5 +1,6 @@
 import allure
 
+from conftest import browser
 from constants.hosts import BASE_URL
 from pages.base_page import BasePage
 
@@ -55,9 +56,10 @@ class ProjectCreationPage(BasePage):
             with allure.step("Переход на страницу создания проекта"):
                 self.actions.navigate(self.page_url)
                 self.actions.wait_for_page_load()
-        def create_project(self, name, project_id, description):
-            self.go_to_creation_page()
-            self.menu_list_create.click_create_manually()
+        def create_project(self, name, project_id, description, browser):
+            # self.go_to_creation_page()
+            # self.menu_list_create.click_create_manually()
+            browser.click(".FavoriteProjectsPage__button--wS")
             self.create_form_container.input_project_details(name, project_id, description)
             self.create_form_container.click_create_button()
             self.page_url = (f'/admin/editProject.html?projectId={project_id}')
