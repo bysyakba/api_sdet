@@ -18,11 +18,9 @@ def test_create_build_config(browser, project_data, super_admin):
         browser.fill('#username', 'admin')
         browser.fill('#password', 'lox')
         browser.click('.loginButton')
-        # browser.wait_for_selector('#errorMessage')
-        # time.sleep(5)
         browser.wait_for_url('http://localhost:8111/favorite/projects', timeout=1000000000)
-        # time.sleep(5)
-
+        print("sex")
+    print("sex")
     with allure.step("Создание проекта"):
         project_creation_browser = ProjectCreationPage(browser)
         project_creation_browser.create_project(project_name, project_id, project_name)

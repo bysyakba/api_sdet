@@ -36,7 +36,7 @@ class CreateBuildContainerFragment(BasePage):
 class BuildCreationPage(BasePage):
         def __init__(self, page):
             super().__init__(page)
-            self.page_url = ('/admin/createObjectMenu.html?projectId=id353&showMode=createBuildTypeMenu&cameFromUrl=%2Fadmin%2FeditProject.html%3FprojectId%3Did353#createManually')
+            self.page_url = ('/admin/createObjectMenu.html?projectId=_Root&showMode=createProjectMenu&cameFromUrl=http%3A%2F%2Flocalhost%3A8111%2Ffavorite%2Fprojects#createFromUrl')
             self.create_form_container = CreateBuildContainerFragment(page)
             self.create_build_config = ".icon_before"
 
