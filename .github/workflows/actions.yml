@@ -15,34 +15,30 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-
       - name: Set up Docker
         uses: docker/setup-buildx-action@v1
-
 
       - name: Prepare Logs Directory
         run: |
           mkdir -p ./logs
           sudo chown -R 1000:1000 ./logs
-        
 
       - name: Run TeamCity Server Container
         run: |
           docker run -d --name teamcity-server-instance -v ${{ github.workspace }}/logs:/opt/teamcity/logs -p 8111:8111 jetbrains/teamcity-server
           echo "Waiting for TeamCity server to start..."
           for i in {1..30}; do
-                  if docker logs teamcity-server-instance 2>&1 | grep -q 'TeamCity process PID is'; then
-                    echo "TeamCity server started successfully."
-                    break
-                  fi
-                  echo "Waiting..."
-                  sleep 5
-                done
-                echo "Docker Status:"
-                docker ps -a
-                echo "TeamCity Server Logs:"
-                docker logs teamcity-server-instance
-          
+            if docker logs teamcity-server-instance 2>&1 | grep -q 'TeamCity process PID is'; then
+              echo "TeamCity server started successfully."
+              break
+            fi
+            echo "Waiting..."
+            sleep 5
+          done
+          echo "Docker Status:"
+          docker ps -a
+          echo "TeamCity Server Logs:"
+          docker logs teamcity-server-instance
 
       - name: Check Port Availability
         run: |
@@ -52,27 +48,25 @@ jobs:
           else
             echo "Port 8111 is not open."
           fi
-          
-          
 
       - name: Run TeamCity Agent Container
         run: |
           docker run -d --name teamcity-agent-instance -e SERVER_URL="http://localhost:8111" jetbrains/teamcity-agent
-          
 
-      - name: Install Python Dependencies
+      - name: Install Python & Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3.10 python3-pip
+          sudo apt-get install -y python3.10 python3-pip openjdk-11-jre
           pip install -r requirements.txt
-          
+          npm install -g allure-commandline --save-dev
+
+      - name: Install Playwright & Browsers
+        run: |
+          playwright install --with-deps
 
       - name: Run Set Up Test
         run: |
-          playwright install
-          pytest -v tests/vrotend/test_set_up.py 
-          
-          
+          pytest -v tests/vrotend/test_set_up.py --alluredir=results
 
       - name: Retrieve Super User Token
         run: |
@@ -86,7 +80,7 @@ jobs:
               break
             else
               echo "Token not found, waiting..."
-              sleep 10 # интервал проверки каждые 10 секунд
+              sleep 10
               timeout=$((timeout-10))
             fi
           done
@@ -95,7 +89,16 @@ jobs:
           fi
         shell: /usr/bin/bash -e {0}
 
-
-      - name: Run Tests
+      - name: Run Tests with Allure
         run: |
-          pytest -v --alluredir=results --ignore=tests/vrotend/test_set_up.py
+          pytest -v --alluredir=results --capture=sys --ignore=tests/vrotend/test_set_up.py
+
+      - name: Generate Allure Report
+        run: |
+          allure generate results -o allure-report --clean
+
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: allure-report
