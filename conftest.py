@@ -79,21 +79,3 @@ def browser(request):
     BrowserSetup.teardown(context, browser, plawright)
 
 
-@pytest.fixture(scope="function", autouse=True)
-def record_video_and_screenshots(browser_context: BrowserContext, request):
-    video_path = f"results/videos/{request.node.name}.webm"
-    screenshot_path = f"results/screenshots/{request.node.name}.png"
-
-    # Включаем запись видео и скриншотов
-    browser_context.tracing.start(screenshots=True, snapshots=True, sources=True)
-
-    yield
-
-    # Сохраняем видео и скриншот после теста
-    page = browser_context.pages[0]
-    page.screenshot(path=screenshot_path)
-    browser_context.tracing.stop(path=video_path)
-
-    # Прикрепляем к Allure
-    allure.attach.file(video_path, name="Test Video", attachment_type=allure.attachment_type.WEBM)
-    allure.attach.file(screenshot_path, name="Test Screenshot", attachment_type=allure.attachment_type.PNG)
