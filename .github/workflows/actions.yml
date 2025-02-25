@@ -28,17 +28,17 @@ jobs:
           docker run -d --name teamcity-server-instance -v ${{ github.workspace }}/logs:/opt/teamcity/logs -p 8111:8111 jetbrains/teamcity-server
           echo "Waiting for TeamCity server to start..."
           for i in {1..30}; do
-                  if docker logs teamcity-server-instance 2>&1 | grep -q 'TeamCity process PID is'; then
-                    echo "TeamCity server started successfully."
-                    break
-                  fi
-                  echo "Waiting..."
-                  sleep 5
-                done
-                echo "Docker Status:"
-                docker ps -a
-                echo "TeamCity Server Logs:"
-                docker logs teamcity-server-instance
+            if docker logs teamcity-server-instance 2>&1 | grep -q 'TeamCity process PID is'; then
+              echo "TeamCity server started successfully."
+              break
+            fi
+            echo "Waiting..."
+            sleep 5
+          done
+          echo "Docker Status:"
+          docker ps -a
+          echo "TeamCity Server Logs:"
+          docker logs teamcity-server-instance
 
       - name: Check Port Availability
         run: |
@@ -53,13 +53,18 @@ jobs:
         run: |
           docker run -d --name teamcity-agent-instance -e SERVER_URL="http://localhost:8111" jetbrains/teamcity-agent
 
-      - name: Install Python and Dependencies
+      - name: Install System Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3.10 python3-pip libasound2t64 libx264-164
+          sudo apt-get install -y libasound2t64 libffi8 libx264-164
+
+      - name: Install Python Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3.10 python3-pip
           pip install -r requirements.txt
 
-      - name: Install Playwright
+      - name: Install Playwright Browsers
         run: |
           playwright install --with-deps
 
@@ -79,7 +84,7 @@ jobs:
               break
             else
               echo "Token not found, waiting..."
-              sleep 10
+              sleep 10 
               timeout=$((timeout-10))
             fi
           done
@@ -88,7 +93,7 @@ jobs:
           fi
         shell: /usr/bin/bash -e {0}
 
-      - name: Run Tests
+      - name: Run Tests with Allure Reporting
         run: |
           pytest -v --alluredir=results --ignore=tests/vrotend/test_set_up.py
 
@@ -96,8 +101,9 @@ jobs:
         run: |
           allure generate results -o allure-report --clean
 
-      - name: Upload Allure Report
+      - name: Upload Allure Report Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: allure-report
+          retention-days: 7
