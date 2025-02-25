@@ -28,17 +28,17 @@ jobs:
           docker run -d --name teamcity-server-instance -v ${{ github.workspace }}/logs:/opt/teamcity/logs -p 8111:8111 jetbrains/teamcity-server
           echo "Waiting for TeamCity server to start..."
           for i in {1..30}; do
-            if docker logs teamcity-server-instance 2>&1 | grep -q 'TeamCity process PID is'; then
-              echo "TeamCity server started successfully."
-              break
-            fi
-            echo "Waiting..."
-            sleep 5
-          done
-          echo "Docker Status:"
-          docker ps -a
-          echo "TeamCity Server Logs:"
-          docker logs teamcity-server-instance
+                  if docker logs teamcity-server-instance 2>&1 | grep -q 'TeamCity process PID is'; then
+                    echo "TeamCity server started successfully."
+                    break
+                  fi
+                  echo "Waiting..."
+                  sleep 5
+                done
+                echo "Docker Status:"
+                docker ps -a
+                echo "TeamCity Server Logs:"
+                docker logs teamcity-server-instance
 
       - name: Check Port Availability
         run: |
@@ -53,26 +53,19 @@ jobs:
         run: |
           docker run -d --name teamcity-agent-instance -e SERVER_URL="http://localhost:8111" jetbrains/teamcity-agent
 
-      - name: Install Python & Dependencies
+      - name: Install Python and Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3.10 python3-pip openjdk-11-jre
+          sudo apt-get install -y python3.10 python3-pip libasound2t64 libx264-164
           pip install -r requirements.txt
-          npm install -g allure-commandline --save-dev
 
-      - name: Install missing dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libasound2 libffi8 libx264-164
-
-
-      - name: Install Playwright & Browsers
+      - name: Install Playwright
         run: |
           playwright install --with-deps
 
       - name: Run Set Up Test
         run: |
-          pytest -v tests/vrotend/test_set_up.py --alluredir=results
+          pytest -v tests/vrotend/test_set_up.py 
 
       - name: Retrieve Super User Token
         run: |
@@ -95,9 +88,9 @@ jobs:
           fi
         shell: /usr/bin/bash -e {0}
 
-      - name: Run Tests with Allure
+      - name: Run Tests
         run: |
-          pytest -v --alluredir=results --capture=sys --ignore=tests/vrotend/test_set_up.py
+          pytest -v --alluredir=results --ignore=tests/vrotend/test_set_up.py
 
       - name: Generate Allure Report
         run: |
